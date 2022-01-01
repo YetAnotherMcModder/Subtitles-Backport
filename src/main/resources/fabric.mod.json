@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "subtitlesbackport",
+  "version": "${version}",
+
+  "name": "Subtitles Backport",
+  "description": "Adds subtitles from 1.9",
+  "authors": [
+    "piper74"
+  ],
+  "contact": {
+    "homepage": "https://legacyfabric.net/",
+    "sources": "https://github.com/Legacy-Fabric/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/subtitlesbackport/icon.png",
+
+  "environment": "CLIENT",
+  "entrypoints": {
+    "main": [
+      "piper74.subtitles.backport.SubtitlesMod"
+    ],
+    "client": [
+      "piper74.subtitles.backport.SubtitlesClientMod"
+    ]
+  },
+  "mixins": [
+    "subtitlesbackport.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.9.0",
+    "minecraft": "1.8.9"
+  },
+  "custom": {
+    "modmenu:clientsideOnly": true
+  }
+}
