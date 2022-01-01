@@ -1,16 +1,5 @@
-# Fabric Example Mod
+# Subtitles backport
 
-## Setup
-
-1. Edit build.gradle and mod.json to suit your needs.
-    * The "mixins" object can be removed from mod.json if you do not need to use mixins.
-    * Please replace all occurences of "modid" with your own mod ID - sometimes, a different string may also suffice.
-2. Run the following command:
-
-```
-./gradlew idea
-```
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Adds subtitles from 1.9
+Not all sounds have subtitles as of now. /subtitles command is broken on servers.
+Relog/reconnect to worlds/servers to fix problems with the subtitles display being in the wrong position.
