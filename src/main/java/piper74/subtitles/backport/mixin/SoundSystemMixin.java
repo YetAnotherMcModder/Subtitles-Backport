@@ -1,5 +1,7 @@
 package piper74.subtitles.backport.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
@@ -10,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import piper74.subtitles.backport.SubtitlesMod;
 import piper74.subtitles.backport.util.SubtitlesHud;
 
+@Environment(EnvType.CLIENT)
 @Mixin(SoundSystem.class)
 public abstract class SoundSystemMixin {
     MinecraftClient client;

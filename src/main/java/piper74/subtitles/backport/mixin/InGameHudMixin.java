@@ -1,16 +1,21 @@
 package piper74.subtitles.backport.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import piper74.subtitles.backport.SubtitlesClientMod;
-import piper74.subtitles.backport.util.SubtitlesHud;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.util.Window;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import net.minecraft.client.util.Window;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import piper74.subtitles.backport.SubtitlesMod;
+import piper74.subtitles.backport.util.SubtitlesHud;
 
+@Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
     @Mutable
@@ -35,10 +40,10 @@ public class InGameHudMixin {
     public void subtitlesmod$render(float tickDelta, CallbackInfo ci)
     {
         if (SubtitlesMod.config.enabled) {
-            if(SubtitlesClientMod.shouldUpdateWindow)
+            if(SubtitlesMod.shouldUpdateWindow)
             {
                 window = new Window(client.getInstance());
-                SubtitlesClientMod.shouldUpdateWindow = false;
+                SubtitlesMod.shouldUpdateWindow = false;
             }
             subtitlesHud.render(window);
         }

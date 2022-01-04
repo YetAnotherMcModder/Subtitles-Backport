@@ -9,20 +9,18 @@
     "piper74"
   ],
   "contact": {
-    "homepage": "https://legacyfabric.net/",
-    "sources": "https://github.com/Legacy-Fabric/fabric-example-mod"
+    "homepage": "https://github.com/YetAnotherMcModder/Subtitles-Backport",
+    "sources": "https://github.com/YetAnotherMcModder/Subtitles-Backport",
+    "issues": "https://github.com/YetAnotherMcModder/Subtitles-Backport/issues"
   },
 
   "license": "MIT",
   "icon": "assets/subtitlesbackport/icon.png",
 
-  "environment": "CLIENT",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "piper74.subtitles.backport.SubtitlesMod"
-    ],
-    "client": [
-      "piper74.subtitles.backport.SubtitlesClientMod"
     ]
   },
   "mixins": [

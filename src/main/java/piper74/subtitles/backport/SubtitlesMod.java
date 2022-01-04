@@ -21,10 +21,22 @@ public class SubtitlesMod implements ModInitializer {
 	public Gson daData = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 	Path configPath = Paths.get("config/subtitles-backport.json");
 	static SubtitlesMod subtitlesModStatic;
+	public static boolean shouldUpdateWindow = false;
 
-	public static void saveDaDataStatic()
+	public static void saveDaDatatoFileStatic()
 	{
-		subtitlesModStatic.saveDaData();
+		subtitlesModStatic.saveDaDatatoFile();
+	}
+
+	public void saveDaDatatoFile() {
+		if (config != null)
+		{
+		try {
+			Files.write(configPath, Collections.singleton(daData.toJson(config)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	}
 
 	public void saveDaData() {
@@ -44,6 +56,7 @@ public class SubtitlesMod implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		subtitlesModStatic = this;
 		saveDaData();
 	}
 }

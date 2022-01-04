@@ -8,7 +8,8 @@
   "client": [
     "SoundSystemMixin",
     "InGameHudMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "SoundsScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
