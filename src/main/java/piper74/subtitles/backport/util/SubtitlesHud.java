@@ -1,7 +1,7 @@
 package piper74.subtitles.backport.util;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.GLX;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -9,9 +9,13 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.util.Window;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import piper74.subtitles.backport.SubtitlesMod;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,10 +26,13 @@ public class SubtitlesHud extends DrawableHelper {
     private final List<SubtitlesHud.SubtitleEntry> entries = Lists.newArrayList();
     private static SubtitlesHud subtitlesHudStatic;
     private boolean enabled;
+    private PlayerEntity player = null;
+
 
     public SubtitlesHud(MinecraftClient client) {
-         this.client = client;
-         subtitlesHudStatic = this;
+        this.client = client;
+        //this.player = client.world.getPlayerByName(client.getInstance().getSession().getUsername());
+        subtitlesHudStatic = this;
     }
 
     public void render(Window window) {
@@ -34,13 +41,36 @@ public class SubtitlesHud extends DrawableHelper {
         else if (!SubtitlesMod.config.enabled && this.enabled)
             this.enabled = false;
 
+        // This line causes a crash
+        //this.player = client.world.getPlayerByName(player.getTranslationKey());
+
+        //this.player = client.getSession().
+        //this.player = this.client.world.getPlayerByName(client.getInstance().getSession().getUsername());
+        if(this.player == null)
+        this.player = client.world.getPlayerByName(client.getInstance().getSession().getUsername());
+
+        //Vec3d vec2 = Vec3d.of(0.0D, 0.0D, 0.0D);
+        //entries.add(new SubtitleEntry("asd", vec2.add(0.0D, 0.0D, 0.0D)));
+
         if (this.enabled && !entries.isEmpty()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            Vec3d vec3d = new Vec3d(this.client.player.x, this.client.player.y + (double)this.client.player.getEyeHeight(), this.client.player.z);
-            Vec3d vec3d2 = (new Vec3d(0.0D, 0.0D, -1.0D)).rotateX(-this.client.player.pitch * 0.017453292F).rotateY(-this.client.player.yaw * 0.017453292F);
-            Vec3d vec3d3 = (new Vec3d(0.0D, 1.0D, 0.0D)).rotateX(-this.client.player.pitch * 0.017453292F).rotateY(-this.client.player.yaw * 0.017453292F);
+            //GlStateManager.pushMatrix();
+            //GlStateManager.enableBlend();
+            GL11.glPushMatrix();
+            GL11.glEnable(3042);
+            //GLX.
+            //GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+            GLX.glBlendFuncSeparate(770, 771, 1, 0);
+            //Vec3d vec3d = Vec3d.of((double)0.0, (double)0.0, (double)0.0);
+            Vec3d vec3d = Vec3d.of(this.player.x, (double)this.player.y + (double)this.player.getEyeHeight(), (double)this.player.z);
+            //Vec3d vec3d = Vec3d.of(0.0D, 1.0D, 0.0D);
+
+            Vec3d vec3d2 = Vec3d.of(0.0D, 0.0D, -1.0D); //.vec3d2.method_605(-this.player.pitch * 0.017453292F).vec3d2.method_609(-this.player.yaw * 0.017453292F);
+            vec3d2.method_605(-this.player.pitch * 0.017453292F);
+            vec3d2.method_609(-this.player.yaw * 0.017453292F);
+
+            Vec3d vec3d3 = Vec3d.of(0.0D, 1.0D, 0.0D); //.method_605(-this.player.pitch * 0.017453292F).method_609(-this.player.yaw * 0.017453292F);
+            vec3d3.method_605(-this.player.pitch * 0.017453292F);
+            vec3d3.method_609(-this.player.yaw * 0.017453292F);
             Vec3d vec3d4 = vec3d2.crossProduct(vec3d3);
             int i = 0;
             int j = 0;
@@ -62,7 +92,7 @@ public class SubtitlesHud extends DrawableHelper {
                 subtitleEntry2 = (SubtitlesHud.SubtitleEntry)iterator.next();
                 //int k = 255;
                 String string = subtitleEntry2.getText();
-                Vec3d vec3d5 = subtitleEntry2.getPosition().subtract(vec3d).normalize();
+                Vec3d vec3d5 = subtitleEntry2.getPosition().add(-vec3d.x, -vec3d.y, -vec3d.z).normalize();
                 double d = -vec3d4.dotProduct(vec3d5);
                 double e = -vec3d2.dotProduct(vec3d5);
                 boolean bl = e > 0.5D;
@@ -73,14 +103,18 @@ public class SubtitlesHud extends DrawableHelper {
                 int o = this.client.textRenderer.getStringWidth(string);
                 int p = MathHelper.floor(MathHelper.clampedLerp(255.0D, 75.0D, (double)((float)(MinecraftClient.getTime() - subtitleEntry2.getTime()) / 3000.0F)));
                 int q = p << 16 | p << 8 | p;
-                GlStateManager.pushMatrix();
-                GlStateManager.translatef((float)window.getScaledWidth() - (float)l * 1.0F - 2.0F, (float)(window.getScaledHeight() - 30) - (float)(i * (m + 1)) * 1.0F, 0.0F);
-                GlStateManager.scalef(1.0F, 1.0F, 1.0F);
+                //GlStateManager.pushMatrix();
+                GL11.glPushMatrix();
+                //GlStateManager.translatef((float)window.getScaledWidth() - (float)l * 1.0F - 2.0F, (float)(window.getScaledHeight() - 30) - (float)(i * (m + 1)) * 1.0F, 0.0F);
+                GL11.glTranslatef((float)window.getScaledWidth() - (float)l * 1.0F - 2.0F, (float)(window.getScaledHeight() - 30) - (float)(i * (m + 1)) * 1.0F, 0.0F);
+                //GlStateManager.scalef(1.0F, 1.0F, 1.0F);
+                GL11.glScalef(1.0F, 1.0F, 1.0F);
 
                 if(!SubtitlesMod.config.transparentBackground)
-                fill(-l - 1, -n - 1, l + 1, n + 1, -872415232);
+                this.fill(-l - 1, -n - 1, l + 1, n + 1, -872415232);
 
-                GlStateManager.enableBlend();
+
+                GL11.glEnable(3042);
                 if (!bl) {
                     if (d > 0.0D) {
                         this.client.textRenderer.draw(">", l - this.client.textRenderer.getStringWidth(">"), -n, q + -16777216);
@@ -90,11 +124,14 @@ public class SubtitlesHud extends DrawableHelper {
                 }
 
                 this.client.textRenderer.draw(string, -o / 2, -n, q + -16777216);
-                GlStateManager.popMatrix();
+                //GlStateManager.popMatrix();
+                GL11.glPopMatrix();
             }
 
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            //GlStateManager.disableBlend();
+            GL11.glDisable(3042);
+            //GlStateManager.popMatrix();
+            GL11.glPopMatrix();
         }
     }
 
@@ -115,17 +152,26 @@ public class SubtitlesHud extends DrawableHelper {
                 Iterator var4 = this.entries.iterator();
 
                 while (var4.hasNext()) {
-                    SubtitlesHud.SubtitleEntry subtitleEntry = (SubtitlesHud.SubtitleEntry) var4.next();
+                    SubtitleEntry subtitleEntry = (SubtitleEntry) var4.next();
                     if (subtitleEntry.getText().equals(subtitle2)) {
-                        subtitleEntry.reset(new Vec3d((double) sound.getX(), (double) sound.getY(), (double) sound.getZ()));
+                        subtitleEntry.reset( Vec3d.of((double) sound.getX(), (double) sound.getY(), (double) sound.getZ()));
                         return;
                     }
                 }
             }
             //     SubtitlesMod.LOGGER.info(subtitle2);
-            this.entries.add(new SubtitlesHud.SubtitleEntry(subtitle2, new Vec3d((double) sound.getX(), (double) sound.getY(), (double) sound.getZ())));
+            //Vec3d vec2= null;
+            entries.add(new SubtitleEntry(subtitle2, Vec3d.of((double) sound.getX(), (double) sound.getY(), (double) sound.getZ())));
         }
     }
+
+    public static void setPlayerStatic(PlayerEntity player) {
+        subtitlesHudStatic.setPlayer(player);
+    }
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
+    }
+
     @Environment(EnvType.CLIENT)
     public class SubtitleEntry {
         private final String text;

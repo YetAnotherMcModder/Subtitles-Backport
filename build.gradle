@@ -27,6 +27,13 @@ minecraft {
 loom {
 // Uncomment when using loom 0.10
 //	setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
+	//accessWidener = file("src/main/resources/subtitlesbackport.accesswidener")
+
+	runs {
+		client {
+			programArgs "--userProperties", "{}"
+		}
+	}
 }
 
 dependencies {
@@ -39,7 +46,7 @@ dependencies {
 	//modImplementation ("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${fabric_version}") {
 	//	exclude module: "fabric-loader-1.8.9"
 	//}
-	modImplementation include( "net.legacyfabric.legacy-fabric-api:legacy-fabric-resource-loader-v1:1.0.0+1e58a10239" )
+	modImplementation( "net.legacyfabric.legacy-fabric-api:legacy-fabric-resource-loader-v1:1.0.0+1e58a10239" )
 
 	// Hacks that make mac os work
 	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -48,6 +55,7 @@ dependencies {
 		implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 	}
 }
+
 
 // More hacks that make mac os work
 if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -89,6 +97,7 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+		from("pack.mcmeta") {}
 }
 
 // configure the maven publication

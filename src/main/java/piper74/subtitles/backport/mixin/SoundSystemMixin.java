@@ -16,14 +16,14 @@ import piper74.subtitles.backport.util.SubtitlesHud;
 @Mixin(SoundSystem.class)
 public abstract class SoundSystemMixin {
     MinecraftClient client;
-    public SubtitlesHud subtitlesHud = new SubtitlesHud(client);
+    public SubtitlesHud subtitlesHud = new SubtitlesHud(client.getInstance());
 
     /***************************************************
      * @reason Send played sound names to subtitle HUD
      * @author piper74
      ***************************************************/
 
-    @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/sound/SoundSystem;field_5494:Lnet/minecraft/client/sound/SoundSystem$ThreadSafeSoundSystem;", ordinal = 4))
+    @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/sound/SoundSystem;field_8193:Lnet/minecraft/class_1907;", ordinal = 3))
     public void subtitlesmod$play(SoundInstance soundInstance, CallbackInfo ci)
     {
         if (SubtitlesMod.config.enabled) {

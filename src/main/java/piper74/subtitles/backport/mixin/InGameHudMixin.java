@@ -25,7 +25,7 @@ public class InGameHudMixin {
 
     private SubtitlesHud subtitlesHud;
 
-    Window window = new Window(client.getInstance());
+    Window window = new Window(client.getInstance(), this.client.getInstance().width, this.client.getInstance().height);
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     public void subtitlesmod$InGameHud(MinecraftClient client, CallbackInfo ci)
@@ -36,13 +36,13 @@ public class InGameHudMixin {
         }
     }
 
-    @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;titleTotalTicks:I", ordinal = 0))
-    public void subtitlesmod$render(float tickDelta, CallbackInfo ci)
+    @Inject(method = "method_979", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/InGameHud;overlayRemaining:I", ordinal = 0))
+    public void subtitlesmod$render(float f, boolean bl, int i, int j, CallbackInfo ci)
     {
         if (SubtitlesMod.config.enabled) {
             if(SubtitlesMod.shouldUpdateWindow)
             {
-                window = new Window(client.getInstance());
+                window = new Window(client.getInstance(), this.client.getInstance().width, this.client.getInstance().height);
                 SubtitlesMod.shouldUpdateWindow = false;
             }
             subtitlesHud.render(window);

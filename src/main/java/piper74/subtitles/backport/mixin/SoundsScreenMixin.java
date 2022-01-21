@@ -28,6 +28,7 @@ public class SoundsScreenMixin extends Screen {
 
     int i=9; //11
 
+
     @Inject(method = "init", at = @At(value = "TAIL"))
     public void subtitlesmod$init(CallbackInfo ci) {
         int var10004 = this.width / 2 - 75;
