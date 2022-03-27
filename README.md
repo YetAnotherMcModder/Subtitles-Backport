@@ -1,9 +1,16 @@
-# Subtitles backport
+# Fabric Example Mod
 
-Adds subtitles from 1.9
-Some subtitles are still missing. (WIP)
-Subtitles can be turned on/off in Options->Music & Sounds
+## Setup
 
-Some settings can only be accessed by editing the config file (subtitles-backport.json)
+1. Edit gradle.properties, build.gradle and mod.json to suit your needs.
+    * The "mixins" object can be removed from mod.json if you do not need to use mixins.
+    * Please replace all occurences of "modid" with your own mod ID - sometimes, a different string may also suffice.
+2. Run the following command:
 
-Support for 1.7.10 & 1.6.4 (maybe 1.5.2) is coming soon!
+```
+./gradlew
+```
+
+## License
+
+This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.

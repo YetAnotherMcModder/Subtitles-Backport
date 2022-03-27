@@ -1,10 +1,10 @@
 package piper74.subtitles.backport.mixin;
 
+import MinecraftClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //import net.minecraft.client.MinecraftClient;
 //import net.minecraft.network.packet.s2c.EmptyS2CPacket;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.Window;
 import org.spongepowered.asm.mixin.Final;

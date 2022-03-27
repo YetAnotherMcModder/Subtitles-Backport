@@ -2,8 +2,8 @@ package piper74.subtitles.backport.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,8 +23,8 @@ public abstract class SoundSystemMixin {
      * @author piper74
      ***************************************************/
 
-    @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/sound/SoundSystem;field_8193:Lnet/minecraft/client/sound/SoundSystem$ThreadSafeSoundSystem;", ordinal = 4))
-    public void subtitlesmod$play(SoundInstance soundInstance, CallbackInfo ci)
+    @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/sound/SoundSystem;field_5494:Lnet/minecraft/client/sound/SoundSystem$ThreadSafeSoundSystem;", ordinal = 4))
+    public void subtitlesmod$play(SkullBlockEntity soundInstance, CallbackInfo ci)
     {
         if (SubtitlesMod.config.enabled) {
             SubtitlesHud.onSoundPlayed(soundInstance);
